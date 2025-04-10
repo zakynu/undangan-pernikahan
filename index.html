@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Undangan Pernikahan</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fdf6f0;
+      color: #333;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+    .container {
+      padding: 2em;
+    }
+    h1 {
+      font-size: 2.5em;
+      margin-bottom: 0.2em;
+    }
+    .names, .editable {
+      font-size: 1.8em;
+      font-weight: bold;
+      margin: 1em 0;
+    }
+    .info {
+      margin-bottom: 1em;
+    }
+    .gallery img {
+      width: 150px;
+      margin: 0.5em;
+      border-radius: 10px;
+    }
+    iframe {
+      border: none;
+      width: 90%;
+      height: 300px;
+      margin: 2em auto;
+    }
+    .edit-button {
+      margin-top: 1em;
+      padding: 0.5em 1em;
+      font-size: 1em;
+      border: none;
+      background-color: #d4a373;
+      color: white;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+    .edit-button:hover {
+      background-color: #b88556;
+    }
+  </style>
+</head>
+<body>
+  <audio autoplay loop>
+    <source src="musik.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+  <div class="container">
+    <h1>Undangan Pernikahan</h1>
+    <div class="editable" contenteditable="true" id="names">Muhammad Ilham Zaky Nuha & Calliope</div>
+    <div id="to" class="info"></div>
+
+    <div class="info" contenteditable="true">
+      <p>Dengan penuh cinta dan bahagia, kami mengundang Anda untuk hadir dalam acara pernikahan kami.</p>
+      <p><strong>Tanggal:</strong> 24 Juni</p>
+      <p><strong>Waktu:</strong> 08.00 - 12.00 WIB</p>
+      <p><strong>Tempat:</strong> Hotel Istana, Jl. Raya Surabaya - Madiun No.Km.1, Sanggrahan, Kedondong, Kec. Bagor, Kabupaten Nganjuk, Jawa Timur 64461</p>
+    </div>
+
+    <h2>Galeri</h2>
+    <div class="gallery" contenteditable="true">
+      <img src="foto1.jpg" alt="Foto 1">
+      <img src="foto2.jpg" alt="Foto 2">
+      <img src="foto3.jpg" alt="Foto 3">
+    </div>
+
+    <h2>Lokasi</h2>
+    <iframe src="https://www.google.com/maps?q=Hotel+Istana+Nganjuk&output=embed"></iframe>
+
+    <button class="edit-button" onclick="saveContent()">Simpan Perubahan</button>
+    <button class="edit-button" onclick="resetContent()">Reset Perubahan</button>
+  </div>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const namaTamu = urlParams.get('to');
+    if(namaTamu) {
+      document.getElementById('to').innerHTML = `<p>Kepada Yth. <strong>${namaTamu}</strong></p>`;
+    }
+
+    function saveContent() {
+      const names = document.getElementById('names').innerHTML;
+      const info = document.querySelector('.info').innerHTML;
+      const gallery = document.querySelector('.gallery').innerHTML;
+
+      localStorage.setItem('names', names);
+      localStorage.setItem('info', info);
+      localStorage.setItem('gallery', gallery);
+      alert('Perubahan disimpan di browser.');
+    }
+
+    function resetContent() {
+      localStorage.clear();
+      location.reload();
+    }
+
+    window.onload = function() {
+      if(localStorage.getItem('names')) document.getElementById('names').innerHTML = localStorage.getItem('names');
+      if(localStorage.getItem('info')) document.querySelector('.info').innerHTML = localStorage.getItem('info');
+      if(localStorage.getItem('gallery')) document.querySelector('.gallery').innerHTML = localStorage.getItem('gallery');
+    }
+  </script>
+</body>
+</html>
