@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Undangan Pernikahan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Libre+Baskerville&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Libre Baskerville', serif;
+      background: #fff8e1;
+      color: #5a3e1b;
+      text-align: center;
+    }
+    .container {
+      padding: 20px;
+      max-width: 600px;
+      margin: auto;
+    }
+    h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3em;
+      color: #d4af37;
+    }
+    .gold-line {
+      height: 3px;
+      background: linear-gradient(to right, transparent, #d4af37, transparent);
+      margin: 20px 0;
+    }
+    .photo {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 16px;
+      margin-bottom: 20px;
+    }
+    .info {
+      font-size: 1.1em;
+      margin-bottom: 10px;
+    }
+    .footer {
+      margin-top: 40px;
+      font-size: 0.9em;
+      color: #806c49;
+    }
+    .button {
+      background: #d4af37;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      font-size: 1em;
+      border-radius: 8px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .form-control {
+      margin: 10px 0;
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+    }
+    .gallery img {
+      width: 100%;
+      max-height: 200px;
+      object-fit: cover;
+      margin-top: 10px;
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+  <audio autoplay loop>
+    <source src="musik-latar.mp3" type="audio/mpeg">
+    Browser Anda tidak mendukung elemen audio.
+  </audio>
+  <div class="container">
+    <input type="file" accept="image/*" onchange="loadPhoto(event)" class="form-control" />
+    <img id="mainPhoto" src="foto-pengantin.jpg" alt="Foto Pengantin" class="photo" />
+    <input type="text" id="namaPasangan" class="form-control" value="Ilham & Calliope" />
+    <h1 id="judulPasangan">Ilham & Calliope</h1>
+
+    <div class="gold-line"></div>
+
+    <input type="text" id="namaTamu" class="form-control" value="Kepada Yth. Bapak/Ibu/Saudara/i" />
+    <p class="info" id="ucapanTamu">Kepada Yth. Bapak/Ibu/Saudara/i</p>
+
+    <p class="info">Dengan memohon rahmat dan ridho Allah SWT, kami mengundang Anda untuk menghadiri acara pernikahan kami:</p>
+
+    <input type="date" id="tanggal" class="form-control" value="2025-06-24" />
+    <input type="time" id="waktu" class="form-control" value="08:00" />
+    <input type="text" id="lokasi" class="form-control" value="Hotel Istana, Nganjuk" />
+
+    <p class="info"><strong>Tanggal:</strong> <span id="tglView">Senin, 24 Juni 2025</span></p>
+    <p class="info"><strong>Waktu:</strong> <span id="jamView">08.00 – 12.00 WIB</span></p>
+    <p class="info"><strong>Tempat:</strong> <span id="lokasiView">Hotel Istana, Nganjuk</span></p>
+
+    <div class="gold-line"></div>
+    <p class="info">Merupakan suatu kehormatan dan kebahagiaan bagi kami apabila Anda berkenan hadir dan memberikan doa restu.</p>
+    <a class="button" href="https://maps.app.goo.gl/LokasiUndangan" target="_blank">Lihat Lokasi</a>
+
+    <div class="gallery">
+      <h3>Galeri Foto</h3>
+      <input type="file" accept="image/*" multiple onchange="loadGallery(event)" class="form-control" />
+      <div id="galleryContainer"></div>
+    </div>
+
+    <div class="footer">
+      <p>Ilham & Calliope</p>
+      <p>© 2025</p>
+    </div>
+  </div>
+
+  <script>
+    function loadPhoto(event) {
+      const image = document.getElementById('mainPhoto');
+      image.src = URL.createObjectURL(event.target.files[0]);
+    }
+
+    function loadGallery(event) {
+      const container = document.getElementById('galleryContainer');
+      container.innerHTML = '';
+      Array.from(event.target.files).forEach(file => {
+        const img = document.createElement('img');
+        img.src = URL.createObjectURL(file);
+        container.appendChild(img);
+      });
+    }
+
+    document.getElementById('namaPasangan').addEventListener('input', e => {
+      document.getElementById('judulPasangan').textContent = e.target.value;
+    });
+
+    document.getElementById('namaTamu').addEventListener('input', e => {
+      document.getElementById('ucapanTamu').textContent = e.target.value;
+    });
+
+    const tanggalInput = document.getElementById('tanggal');
+    const waktuInput = document.getElementById('waktu');
+    const lokasiInput = document.getElementById('lokasi');
+
+    tanggalInput.addEventListener('input', updateInfo);
+    waktuInput.addEventListener('input', updateInfo);
+    lokasiInput.addEventListener('input', updateInfo);
+
+    function updateInfo() {
+      const tanggal = new Date(tanggalInput.value);
+      const hari = tanggal.toLocaleDateString('id-ID', { weekday: 'long' });
+      const tgl = tanggal.toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
+      document.getElementById('tglView').textContent = `${hari}, ${tgl}`;
+      document.getElementById('jamView').textContent = `${waktuInput.value} WIB`;
+      document.getElementById('lokasiView').textContent = lokasiInput.value;
+    }
+  </script>
+</body>
+</html>
